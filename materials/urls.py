@@ -5,11 +5,13 @@ from materials.apps import MaterialsConfig
 from materials.views import (CourseViewSet, LessonCreateApiView,
                              LessonDestroyApiView, LessonListApiView,
                              LessonRetrieveApiView, LessonUpdateApiView)
+from users.views import PaymentViewSet
 
 app_name = MaterialsConfig.name
 
 router = SimpleRouter()
-router.register("", CourseViewSet)
+router.register("courses", CourseViewSet)
+router.register("payments", PaymentViewSet, basename='payments')
 
 urlpatterns = [
     path("lessons/", LessonListApiView.as_view(), name="lessons_list"),

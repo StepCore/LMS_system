@@ -8,7 +8,7 @@ from materials.serializers import CourseSerializer, LessonSerializer
 
 
 class CourseViewSet(ModelViewSet):
-    queryset = Course.objects.all()
+    queryset = Course.objects.prefetch_related('lesson').all()
     serializer_class = CourseSerializer
 
 
@@ -19,6 +19,7 @@ class LessonCreateApiView(CreateAPIView):
 
 class LessonListApiView(ListAPIView):
     queryset = Lesson.objects.all()
+    filterset_fields = ("course",)
     serializer_class = LessonSerializer
 
 

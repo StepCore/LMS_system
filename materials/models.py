@@ -19,6 +19,8 @@ class Course(models.Model):
     description = models.CharField(
         verbose_name="Описание курса",
         help_text="Укажите описание курса",
+        blank=True,
+        null=True,
     )
 
     class Meta:
@@ -31,8 +33,8 @@ class Lesson(models.Model):
     name = models.CharField(
         max_length=35,
         unique=True,
-        verbose_name="Название курса",
-        help_text="Укажите название курса",
+        verbose_name="Название урока",
+        help_text="Укажите название урока",
     )
     photo = models.ImageField(
         upload_to="users/course",
@@ -42,8 +44,10 @@ class Lesson(models.Model):
         help_text="Загрузите изображение урока",
     )
     description = models.CharField(
-        verbose_name="Описание курса",
-        help_text="Укажите описание курса",
+        verbose_name="Описание урока",
+        help_text="Укажите описание урока",
+        blank=True,
+        null=True,
     )
 
     video_url = models.URLField(
@@ -55,8 +59,8 @@ class Lesson(models.Model):
 
     course = models.ForeignKey(
         Course,
-        on_delete=models.SET_NULL,
-        null=True,
+        on_delete=models.CASCADE,
+        related_name='lesson',
         verbose_name="Курс",
         help_text="Выберите курс",
     )
