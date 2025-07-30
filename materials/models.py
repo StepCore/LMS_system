@@ -2,7 +2,14 @@ from django.db import models
 
 
 class Course(models.Model):
-
+    owner = models.ForeignKey(
+        "users.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Владелец курса",
+        help_text="Укажите владельца курса",
+    )
     name = models.CharField(
         max_length=35,
         unique=True,
@@ -29,7 +36,6 @@ class Course(models.Model):
 
 
 class Lesson(models.Model):
-
     name = models.CharField(
         max_length=35,
         unique=True,
@@ -58,11 +64,20 @@ class Lesson(models.Model):
     )
 
     course = models.ForeignKey(
-        Course,
+        "Course",
         on_delete=models.CASCADE,
-        related_name='lesson',
+        related_name="lesson",
         verbose_name="Курс",
         help_text="Выберите курс",
+    )
+
+    owner = models.ForeignKey(
+        "users.User",
+        on_delete=models.SET_NULL,
+        null=True,
+        blank=True,
+        verbose_name="Владелец урока",
+        help_text="Укажите владельца урока",
     )
 
     class Meta:
