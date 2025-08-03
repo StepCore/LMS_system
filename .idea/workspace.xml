@@ -4,26 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="23cafc18-5476-4876-9c3f-c2c22bd37c10" name="Changes" comment="create payment model, filters.py, payment serializers.py, users/views.py">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/media/users/course/3iStock-1140819116.jpg.1000x1000x1.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/users/management/commands/csu.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/users/permissions.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/users/urls.py" afterDir="false" />
+    <list default="true" id="23cafc18-5476-4876-9c3f-c2c22bd37c10" name="Changes" comment="somefix">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/urls.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/materials/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/materials/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/materials/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/materials/serializers.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/materials/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/materials/urls.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/materials/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/materials/views.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" afterPath="$PROJECT_DIR$/requirements.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/users/admin.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/admin.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/filters.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/filters.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/management/commands/load_payment.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/management/commands/load_payment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/models.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/models.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/serializers.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/serializers.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/users/views.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/views.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/permissions.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/permissions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/users/urls.py" beforeDir="false" afterPath="$PROJECT_DIR$/users/urls.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -147,13 +134,22 @@
       <option name="project" value="LOCAL" />
       <updated>1753121384803</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="somefix">
+      <option name="closed" value="true" />
+      <created>1753897399253</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1753897399253</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="test commit" />
     <MESSAGE value="fix" />
     <MESSAGE value="create payment model, filters.py, payment serializers.py, users/views.py" />
-    <option name="LAST_COMMIT_MESSAGE" value="create payment model, filters.py, payment serializers.py, users/views.py" />
+    <MESSAGE value="somefix" />
+    <option name="LAST_COMMIT_MESSAGE" value="somefix" />
   </component>
 </project>
