@@ -1,11 +1,12 @@
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import permissions, viewsets
 from rest_framework.filters import OrderingFilter
-from rest_framework.generics import CreateAPIView
 from rest_framework.permissions import AllowAny
+from rest_framework.viewsets import ModelViewSet
 
 from .filters import PaymentFilter
 from .models import Payment, User
+from .permissions import IsOwner
 from .serializers import PaymentSerializer, UserSerializer
 
 
@@ -26,12 +27,21 @@ class PaymentViewSet(viewsets.ModelViewSet):
         return queryset
 
 
-class UserCreateAPIView(CreateAPIView):
-    serializer_class = UserSerializer
+class UserViewSet(ModelViewSet):
     queryset = User.objects.all()
-    permissions_classes = (AllowAny,)
+    serializer_class = UserSerializer
+    permission_classes = [AllowAny]
 
     def perform_create(self, serializer):
         user = serializer.save(is_active=True)
         user.set_password(user.password)
         user.save()
+
+    def get_permissions(self):
+        if self.action in ["update", "destroy"]:
+            permission_classes = [IsOwner]
+        elif self.action == "create":
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [AllowAny]
+        return [permission() for permission in permission_classes]
