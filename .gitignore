@@ -96,7 +96,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+../mailing_app/.env
 .venv
 env/
 venv/
