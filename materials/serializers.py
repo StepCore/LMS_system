@@ -1,13 +1,12 @@
 from rest_framework import serializers
+
 from materials.models import Course, Lesson
 from materials.validators import validate_youtube_only
 
 
 class LessonSerializer(serializers.ModelSerializer):
     video_url = serializers.URLField(
-        validators=[validate_youtube_only],
-        required=False,
-        allow_null=True
+        validators=[validate_youtube_only], required=False, allow_null=True
     )
 
     class Meta:
@@ -25,7 +24,7 @@ class CourseSerializer(serializers.ModelSerializer):
 
     def get_is_subscribed(self, course):
         """Проверяет, подписан ли текущий пользователь на курс"""
-        request = self.context.get('request')
+        request = self.context.get("request")
         if request and request.user.is_authenticated:
             return course.subscriptions.filter(user=request.user).exists()
         return False

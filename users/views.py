@@ -2,10 +2,10 @@ import secrets
 
 from django.core.mail import send_mail
 from django.shortcuts import redirect
-from django.urls import reverse_lazy, reverse
+from django.urls import reverse, reverse_lazy
 from django.views.generic import CreateView
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions, viewsets, status
+from rest_framework import permissions, status, viewsets
 from rest_framework.filters import OrderingFilter
 from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
@@ -15,9 +15,10 @@ from rest_framework.viewsets import ModelViewSet
 
 from config.settings import EMAIL_HOST_USER
 from materials.models import Course
+
 from .filters import PaymentFilter
 from .forms import UserRegisterForm
-from .models import Payment, User, Subscription
+from .models import Payment, Subscription, User
 from .permissions import IsOwner
 from .serializers import PaymentSerializer, UserSerializer
 
@@ -93,12 +94,11 @@ class SubscriptionAPIView(APIView):
 
     def post(self, request, *args, **kwargs):
         user = request.user
-        course_id = request.data.get('course_id')
+        course_id = request.data.get("course_id")
 
         if not course_id:
             return Response(
-                {"error": "course_id обязателен"},
-                status=status.HTTP_400_BAD_REQUEST
+                {"error": "course_id обязателен"}, status=status.HTTP_400_BAD_REQUEST
             )
 
         course_item = get_object_or_404(Course, id=course_id)
@@ -106,9 +106,9 @@ class SubscriptionAPIView(APIView):
 
         if subs_item.exists():
             subs_item.delete()
-            message = 'Подписка удалена'
+            message = "Подписка удалена"
         else:
             Subscription.objects.create(user=user, course=course_item)
-            message = 'Подписка добавлена'
+            message = "Подписка добавлена"
 
         return Response({"message": message}, status=status.HTTP_200_OK)
