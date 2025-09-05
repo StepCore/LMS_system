@@ -1,11 +1,23 @@
+import secrets
+
+from django.core.mail import send_mail
+from django.shortcuts import redirect
+from django.urls import reverse_lazy, reverse
+from django.views.generic import CreateView
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, viewsets, status
 from rest_framework.filters import OrderingFilter
+from rest_framework.generics import get_object_or_404
 from rest_framework.permissions import AllowAny
+from rest_framework.response import Response
+from rest_framework.views import APIView
 from rest_framework.viewsets import ModelViewSet
 
+from config.settings import EMAIL_HOST_USER
+from materials.models import Course
 from .filters import PaymentFilter
-from .models import Payment, User
+from .forms import UserRegisterForm
+from .models import Payment, User, Subscription
 from .permissions import IsOwner
 from .serializers import PaymentSerializer, UserSerializer
 
@@ -45,3 +57,58 @@ class UserViewSet(ModelViewSet):
         else:
             permission_classes = [AllowAny]
         return [permission() for permission in permission_classes]
+
+
+class UserCreateView(CreateView):
+    model = User
+    form_class = UserRegisterForm
+    success_url = reverse_lazy("users:login")
+
+    def form_valid(self, form):
+        user = form.save()
+        user.is_active = False
+        token = secrets.token_hex(16)
+        user.token = token
+        user.save()
+        host = self.request.get_host()
+        url = f"http://{host}/users/email-confirm/{token}/"
+        send_mail(
+            subject="Подтверждение почты",
+            message=f"Для подтверждения почты необходимо перейти по ссылке, чтобы завершить регистрацию {url}",
+            from_email=EMAIL_HOST_USER,
+            recipient_list=[user.email],
+        )
+        return super().form_valid(form)
+
+
+def email_verification(request, token):
+    user = get_object_or_404(User, token=token)
+    user.is_active = True
+    user.save()
+    return redirect(reverse("users:login"))
+
+
+class SubscriptionAPIView(APIView):
+    permission_classes = [permissions.IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        course_id = request.data.get('course_id')
+
+        if not course_id:
+            return Response(
+                {"error": "course_id обязателен"},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        course_item = get_object_or_404(Course, id=course_id)
+        subs_item = Subscription.objects.filter(user=user, course=course_item)
+
+        if subs_item.exists():
+            subs_item.delete()
+            message = 'Подписка удалена'
+        else:
+            Subscription.objects.create(user=user, course=course_item)
+            message = 'Подписка добавлена'
+
+        return Response({"message": message}, status=status.HTTP_200_OK)
