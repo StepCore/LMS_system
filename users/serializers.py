@@ -8,7 +8,7 @@ from .models import Payment, User
 
 
 class PaymentSerializer(serializers.ModelSerializer):
-    # Сериализаторы для связанных полей (можно сделать более компактными)
+    # Сериализаторы для связанных полей
     paid_course = CourseSerializer(read_only=True)
     paid_lesson = LessonSerializer(read_only=True)
 
@@ -28,7 +28,6 @@ class PaymentSerializer(serializers.ModelSerializer):
         allow_null=True,
     )
 
-    # Человекочитаемое отображение способа оплаты
     payment_method_display = serializers.CharField(
         source="get_payment_method_display", read_only=True
     )
