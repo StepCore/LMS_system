@@ -1,4 +1,5 @@
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import permissions
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveAPIView,
                                      UpdateAPIView)
@@ -22,7 +23,7 @@ class CourseViewSet(ModelViewSet):
     def get_permissions(self):
         if self.action == "create":
             permission_classes = [IsAuthenticated]
-        elif self.action in ["update", "retrieve", "destroy"]:
+        elif self.action in ["update", "destroy"]:
             permission_classes = [IsOwner]
         else:
             permission_classes = []
@@ -55,12 +56,13 @@ class LessonListApiView(ListAPIView):
     pagination_class = LessonPagination
     filter_backends = [DjangoFilterBackend]
     filterset_fields = ("course",)
+    permission_classes = [permissions.AllowAny]
 
 
 class LessonRetrieveApiView(RetrieveAPIView):
     queryset = Lesson.objects.all()
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthenticated, IsModer | IsOwner]
+    permission_classes = [permissions.AllowAny]
 
 
 class LessonUpdateApiView(UpdateAPIView):

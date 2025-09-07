@@ -9,6 +9,17 @@ class LessonSerializer(serializers.ModelSerializer):
         validators=[validate_youtube_only], required=False, allow_null=True
     )
 
+    def validate(self, data):
+        """Проверка, что пользователь может изменять только свои уроки"""
+        if self.instance and self.context['request'].user != self.instance.owner:
+            raise serializers.ValidationError("Вы можете изменять только свои уроки")
+        return data
+
+    def create(self, validated_data):
+        """Автоматическое назначение владельца при создании"""
+        validated_data['owner'] = self.context['request'].user
+        return super().create(validated_data)
+
     class Meta:
         model = Lesson
         fields = "__all__"
