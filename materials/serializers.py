@@ -11,13 +11,13 @@ class LessonSerializer(serializers.ModelSerializer):
 
     def validate(self, data):
         """Проверка, что пользователь может изменять только свои уроки"""
-        if self.instance and self.context['request'].user != self.instance.owner:
+        if self.instance and self.context["request"].user != self.instance.owner:
             raise serializers.ValidationError("Вы можете изменять только свои уроки")
         return data
 
     def create(self, validated_data):
         """Автоматическое назначение владельца при создании"""
-        validated_data['owner'] = self.context['request'].user
+        validated_data["owner"] = self.context["request"].user
         return super().create(validated_data)
 
     class Meta:

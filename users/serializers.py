@@ -67,3 +67,23 @@ class UserSerializer(ModelSerializer):
     class Meta:
         model = User
         fields = "__all__"
+
+
+class PaymentSessionSerializer(serializers.Serializer):
+    session_id = serializers.CharField(read_only=True, help_text="ID сессии Stripe")
+    payment_url = serializers.URLField(read_only=True, help_text="URL для оплаты")
+    payment_id = serializers.IntegerField(
+        read_only=True, help_text="ID платежа в системе"
+    )
+
+
+class PaymentSuccessSerializer(serializers.Serializer):
+    message = serializers.CharField(
+        read_only=True, help_text="Сообщение о результате оплаты"
+    )
+
+
+class PaymentCancelSerializer(serializers.Serializer):
+    message = serializers.CharField(
+        read_only=True, help_text="Сообщение об отмене оплаты"
+    )
