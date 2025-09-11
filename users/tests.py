@@ -93,7 +93,7 @@ class SubscriptionTestCase(APITestCase):
         # User1 подписан на курс
         Subscription.objects.create(user=self.user1, course=self.course1)
         self.client.force_authenticate(user=self.user2)
-        course_url = reverse('materials:course-detail', kwargs={'pk': self.course1.pk})
+        course_url = reverse("materials:course-detail", kwargs={"pk": self.course1.pk})
         response = self.client.get(course_url)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertFalse(response.data['is_subscribed'])
+        self.assertFalse(response.data["is_subscribed"])

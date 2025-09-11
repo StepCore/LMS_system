@@ -121,20 +121,20 @@ class LessonCRUDTestCase(APITestCase):
     def test_update_lesson_owner(self):
         """Тест обновления урока владельцем"""
         lesson_owned = Lesson.objects.create(
-            name='Owned Lesson',
-            description='Owned Description',
+            name="Owned Lesson",
+            description="Owned Description",
             course=self.course2,  # Курс принадлежит regular_user
             owner=self.regular_user,
-            video_url='https://www.youtube.com/watch?v=owned'
+            video_url="https://www.youtube.com/watch?v=owned",
         )
 
-        update_url = reverse('materials:lessons_update', kwargs={'pk': lesson_owned.pk})
+        update_url = reverse("materials:lessons_update", kwargs={"pk": lesson_owned.pk})
         self.client.force_authenticate(user=self.regular_user)
-        data = {'name': 'Updated Lesson Name'}
+        data = {"name": "Updated Lesson Name"}
         response = self.client.patch(update_url, data)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         lesson_owned.refresh_from_db()
-        self.assertEqual(lesson_owned.name, 'Updated Lesson Name')
+        self.assertEqual(lesson_owned.name, "Updated Lesson Name")
 
     def test_update_lesson_not_owner(self):
         """Тест обновления урока не владельцем"""
