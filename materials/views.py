@@ -1,11 +1,14 @@
 from django_filters.rest_framework import DjangoFilterBackend
-from rest_framework import permissions
+from rest_framework import permissions, status
+from rest_framework.decorators import action
 from rest_framework.generics import (CreateAPIView, DestroyAPIView,
                                      ListAPIView, RetrieveAPIView,
                                      UpdateAPIView)
 from rest_framework.permissions import IsAuthenticated
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet
 
+from materials import tasks
 from materials.models import Course, Lesson
 from materials.paginators import CoursePagination, LessonPagination
 from materials.serializers import CourseSerializer, LessonSerializer
@@ -35,6 +38,39 @@ class CourseViewSet(ModelViewSet):
         context = super().get_serializer_context()
         context["request"] = self.request
         return context
+
+    def update(self, request, *args, **kwargs):
+        """Обновление курса с отправкой уведомлений подписчикам"""
+        response = super().update(request, *args, **kwargs)
+
+        if response.status_code == status.HTTP_200_OK:
+            course = self.get_object()
+
+            # Формируем сообщение об обновлении
+            update_message = f"Курс '{course.name}' был обновлен. "
+            if "description" in request.data:
+                update_message += "Изменено описание курса."
+            elif "name" in request.data:
+                update_message += "Изменено название курса."
+            else:
+                update_message += "Внесены изменения в материалы курса."
+
+            # Асинхронная отправка уведомлений подписчикам
+            tasks.send_course_update_notification.delay(course.id, update_message)
+
+        return response
+
+    @action(detail=True, methods=["post"])
+    def add_lesson(self, request):
+        """Добавление урока к курсу с уведомлением подписчиков"""
+        course = self.get_object()
+
+        # Уведомление подписчиков
+        lesson_name = request.data.get("name", "новый урок")
+        update_message = f"Добавлен новый урок: {lesson_name}"
+        tasks.send_course_update_notification.delay(course.id, update_message)
+
+        return Response({"message": "Lesson added and notifications sent"})
 
 
 class LessonCreateApiView(CreateAPIView):

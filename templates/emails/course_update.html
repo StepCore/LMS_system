@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Обновление курса</title>
+</head>
+<body>
+    <h2>Здравствуйте, {{ user.first_name|default:user.email }}!</h2>
+    <p>В курсе "<strong>{{course.name}}</strong>" появились новые материалы:</p>
+    <p>{{update_message}}</p>
+    <p>Перейдите по ссылке, чтобы ознакомиться с обновлениями:</p>
+    <p><a href="http://yourdomain.com/courses/{{ course.id }}/">
+        http://yourdomain.com/courses/{{ course.id }}/
+    </a></p>
+    <br>
+    <p>С уважением,<br>Команда LMS системы</p>
+    <hr>
+    <p style="color: #666; font-size: 12px;">
+        Если вы больше не хотите получать уведомления об этом курсе,
+        вы можете отписаться в личном кабинете.
+    </p>
+</body>
+</html>
